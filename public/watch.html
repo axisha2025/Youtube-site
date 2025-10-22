@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">動画を再生中</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; margin: 20px; background-color: #f4f4f4; }
+        .video-player { width: 80%; max-width: 900px; margin-top: 20px; }
+        .video-wrapper { aspect-ratio: 16 / 9; width: 100%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .video-wrapper iframe { width: 100%; height: 100%; border: none; }
+        h1 { font-size: 1.5em; margin-bottom: 10px; }
+        a { margin-top: 20px; text-decoration: none; color: #007bff; }
+    </style>
+</head>
+<body>
+    <a href="/">← 動画一覧に戻る</a>
+    <h1 id="video-title">ロード中...</h1>
+    <div class="video-player">
+        <div class="video-wrapper">
+            <iframe id="youtube-iframe" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+    <script>
+        function loadVideo() {
+            // URLパスから動画IDを取得（例: /watch/dQw4w9WgXcQ）
+            const videoId = window.location.pathname.split('/').pop();
+            const iframe = document.getElementById('youtube-iframe');
+            
+            if (videoId) {
+                // 公式の埋め込みURLを生成し、iframeのsrcに設定
+                const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                iframe.src = embedUrl;
+                
+                document.getElementById('video-title').textContent = `再生中の動画ID: ${videoId}`;
+                document.getElementById('page-title').textContent = `再生中: ${videoId}`;
+            } else {
+                document.getElementById('video-title').textContent = '動画IDが見つかりません。';
+                iframe.src = '';
+            }
+        }
+
+        loadVideo();
+    </script>
+</body>
+</html>
